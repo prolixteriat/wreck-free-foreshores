@@ -12,6 +12,6 @@ A PHP script which provides user password reset functionality.
 
 ##	Installation
 - A **composer.json** and **composer.lock** file is provided to assist with installation of the necessary dependencies. PHPUnit is included as a dev dependency.
-- Within the **private** directory, it will be necessary to rename and populate the **creds_.php** files to **creds.php**. Once renamed, populate the variables contained within each as appropriate for your environment. Setting the `ENVIRONMENT` variable within the **config.php** file allows quick switching between different environments.
+- Within the **private** directory, it will be necessary to rename the **creds_.php** **config_.php** files to **creds.php** and **config.php**, respectively. Once renamed, populate the variables contained within each as appropriate for your environment. Setting the `ENVIRONMENT` variable within the **config.php** file allows quick switching between different environments.
 - Similarly, within the **tests** directory, rename the **creds_.php** file to **creds.php** and populate with the password previously set within the **database/insert-data.sql** file.
 
