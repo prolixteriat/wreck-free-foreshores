@@ -1,0 +1,5 @@
+# reset / public
+
+# Redirect to front controller
+RewriteEngine On
+RewriteBase /
