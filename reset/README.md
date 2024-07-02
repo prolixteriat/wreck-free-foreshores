@@ -1,4 +1,4 @@
-# api
+# reset
 
 ## Overview
 A PHP script which provides user password reset functionality. 
