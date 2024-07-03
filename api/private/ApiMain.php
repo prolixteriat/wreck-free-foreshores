@@ -23,11 +23,6 @@ $app->post('/v1/add-wreck', function (Request $request, Response $response) {
         ->withStatus($status->code);
 })->add(\PsrJwt\Factory\JwtMiddleware::json(JWT_KEY, 'jwt', array(AUTH_FAILED)));
 
-// Allow additional preflight requests for CORS
-$app->options('/v1/add-wreck', function (Request $request, Response $response): Response {
-    return $response;
-});
-
 # ------------------------------------------------------------------------------
 
 $app->get('/v1/get-photo/{id}', function (Request $request, Response $response, $args) {

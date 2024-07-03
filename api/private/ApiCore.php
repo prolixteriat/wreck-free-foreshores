@@ -29,11 +29,6 @@ $app->post('/v1/add-user', function (Request $request, Response $response) {
         ->withStatus($status->code);
 });
 
-// Allow additional preflight requests for CORS
-$app->options('/v1/add-user', function (Request $request, Response $response): Response {
-    return $response;
-});
-
 # ------------------------------------------------------------------------------
 # TODO
 $app->get('/v1/get-audit', function (Request $request, Response $response) {
@@ -95,11 +90,6 @@ $app->post('/v1/login', function (Request $request, Response $response, $args) {
             ->withStatus($status->code);   	
 });
 
-// Allow additional preflight requests for CORS
-$app->options('/v1/login', function (Request $request, Response $response): Response {
-    return $response;
-});
-
 # ------------------------------------------------------------------------------
 
 $app->post('/v1/password-reset', function (Request $request, Response $response, $args) {
@@ -111,12 +101,6 @@ $app->post('/v1/password-reset', function (Request $request, Response $response,
     return $response
 			->withHeader('Content-Type', 'application/json')
             ->withStatus($status->code); 
-
-});
-
-// Allow additional preflight requests for CORS
-$app->options('/v1/password-reset', function (Request $request, Response $response): Response {
-    return $response;
 });
 
 # ------------------------------------------------------------------------------
@@ -133,11 +117,6 @@ $app->post('/v1/update-role/{username}/{role}', function (Request $request, Resp
         ->withHeader('Content-Type', 'application/json')
         ->withStatus($status->code);
 })->add(\PsrJwt\Factory\JwtMiddleware::json(JWT_KEY, 'jwt', array(AUTH_FAILED)));
-
-// Allow additional preflight requests for CORS
-$app->options('/v1/update-role/{username}/{role}', function (Request $request, Response $response): Response {
-    return $response;
-});
 
 # ------------------------------------------------------------------------------
 
