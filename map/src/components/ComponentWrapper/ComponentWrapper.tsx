@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import { useWrecks } from '@hooks/useWrecks';
 
@@ -14,6 +14,8 @@ interface IWrecksMapWrapperProps {
     component: TComponent;
 }
 // -----------------------------------------------------------------------------
+// TODO: Extend props to include a discriminated union representing props to be
+// drilled to sub-components.
 
 export default function ComponentWrapper( { component }: IWrecksMapWrapperProps): React.JSX.Element {
     
@@ -32,7 +34,9 @@ export default function ComponentWrapper( { component }: IWrecksMapWrapperProps)
             (`Error retrieving wreck data: ${value.useWrecks.error.message}`) : 
             (value.useWrecks.data) ? (
             <>
-                <MakeComponent compType={component} />
+                <Suspense fallback={<Loading />}>
+                    <MakeComponent compType={component} />
+                </Suspense>
             </>
             ) : null)
         }

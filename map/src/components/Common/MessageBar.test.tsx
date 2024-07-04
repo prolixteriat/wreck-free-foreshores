@@ -7,16 +7,19 @@ import { MessageBar } from './MessageBar';
 // -----------------------------------------------------------------------------
 
 const mockOnClick = vi.fn();
-render(<MessageBar 
-        message = 'Test message' 
-        type = 'success'
-        onClose = {mockOnClick} />
-);
+const doRender = (): void => {
+    render(<MessageBar
+            message = 'Test message'
+            type = 'success'
+            onClose = {mockOnClick} />);
+};
+
 // screen.debug();
 
 // -----------------------------------------------------------------------------
     
 test('should call the onClose function when the close button is clicked', () => {
+    doRender();
     const button = screen.getByText('✕');
     fireEvent.click(button);
 
@@ -25,7 +28,7 @@ test('should call the onClose function when the close button is clicked', () => 
 // -----------------------------------------------------------------------------
   
 test('should have the correct classes', () => {
-
+    doRender();
     const classes = document.getElementsByClassName('bg-green-100')
     expect(classes).not.toBeNull();
 });

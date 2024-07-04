@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 
 import { errLatLon, WrecksContext } from '@lib/global';
-
-import { LocationPicker, WrecksMap } from '../';
+import { BoatGallery, LocationPicker, RankingsTable, WrecksMap, 
+    WrecksCharts } from '@lib/lazy';
 
 // -----------------------------------------------------------------------------
 
-export type TComponent = 'LocationPicker' | 'WrecksMap';
+export type TComponent = 'BoatGallery' | 'LocationPicker' | 'RankingsTable' | 
+                            'WrecksCharts' | 'WrecksMap';
 
 // -----------------------------------------------------------------------------
 
@@ -25,6 +26,10 @@ export function MakeComponent({ compType }: IComponentProps): React.JSX.Element 
         return <></>;
     }
     switch (compType) {
+        case 'BoatGallery': {
+            component =  <BoatGallery ids={[1,2]} /> ;
+            break;
+        }           
         case 'LocationPicker': {
             component  = <LocationPicker 
                 map_id={'wrapper_location_picker'}
@@ -33,6 +38,14 @@ export function MakeComponent({ compType }: IComponentProps): React.JSX.Element 
                 onChange={() => {}}/>;
             break;
         }
+        case 'RankingsTable': {
+            component =  <RankingsTable /> ;
+            break;
+        }    
+        case 'WrecksCharts': {
+            component =  <WrecksCharts /> ;
+            break;
+        }    
         case 'WrecksMap': {
             component =  <WrecksMap 
                 map_id={'wrapper_wreckfree_map'}

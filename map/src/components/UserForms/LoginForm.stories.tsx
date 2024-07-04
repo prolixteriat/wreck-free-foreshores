@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 
-import { default as BoatGallery } from './BoatGallery';
+import { default as LoginForm } from './LoginForm';
 
 // -----------------------------------------------------------------------------
 
 const meta = {
-    title: 'BoatGallery',
-    component: BoatGallery,
+    title: 'UserForms/LoginForm',
+    component: LoginForm,
     parameters: {
         layout: 'centered',
     },
@@ -14,7 +15,10 @@ const meta = {
     argTypes: {
         // backgroundColor: { control: 'color' },
     },
-} satisfies Meta<typeof BoatGallery>;
+    args: { 
+        onClose: fn() 
+    },
+} satisfies Meta<typeof LoginForm>;
 
 // -----------------------------------------------------------------------------
 
@@ -23,9 +27,9 @@ type Story = StoryObj<typeof meta>;
 
 // -----------------------------------------------------------------------------
 
-export const Primary: Story = {
+export const Default: Story = {
     args: {
-        ids: [2],
+        isOpen: true,
     },
 }
 // -----------------------------------------------------------------------------

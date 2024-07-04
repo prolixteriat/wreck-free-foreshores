@@ -2,12 +2,13 @@ import { Suspense } from 'react';
 
 import { IWrecksContext } from '@lib/global';
 import { JwtManager } from '@lib/jwtManager';
+import { NotificationForm, RankingsTable, SummaryTable, UsersTable, 
+    WrecksCharts, WrecksMap } from '@lib/lazy';
+
 import { TWrecksSchema } from '@hooks/useWrecks';
 
 import { Loading } from '@components/Common';
 
-import { NotificationForm, RankingsTable, SummaryTable, UsersTable, 
-            WrecksCharts, WrecksMap } from './lazy';
 
 // -----------------------------------------------------------------------------
 

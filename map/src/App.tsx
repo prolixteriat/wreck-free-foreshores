@@ -1,4 +1,4 @@
-import { TopWrapper } from './components';
+import { TopWrapper } from '@components/TopWrapper';
 import { environment, initConfig } from '@lib/config';
 
 // -----------------------------------------------------------------------------

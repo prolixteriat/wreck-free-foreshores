@@ -1,8 +1,9 @@
 import { lazy } from 'react';
 
 // -----------------------------------------------------------------------------
-// Dynamically import the components used by tabs as not all tabs may be used.
 
+export const BoatGallery = lazy(() => import('@components/BoatGallery/BoatGallery'));
+export const LocationPicker = lazy(() => import('@components/LocationPicker/LocationPicker'));
 export const NotificationForm = lazy(() => import('@components/NotificationForm/NotificationForm'));
 export const RankingsTable = lazy(() => import('@components/RankingsTable/RankingsTable'));
 export const SummaryTable = lazy(() => import('@components/SummaryTable/SummaryTable'));
