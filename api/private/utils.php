@@ -8,6 +8,19 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Processor\WebProcessor;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use PsrJwt\Helper\Request as HelperRequest;
+use Slim\Handlers\ErrorHandler;
+
+# ------------------------------------------------------------------------------
+
+class CustomErrorHandler extends ErrorHandler {
+    protected function logError(string $error): void {
+        $logger = get_logger('CustomErrorHandler');
+        $uri = $this->request->getUri();
+        $method = $this->request->getMethod();
+        $logger->error('[requestedUri: ' . (string) $uri . 
+                        '] [method: ' . (string) $method . ']');
+    }
+}
 
 # ------------------------------------------------------------------------------
 

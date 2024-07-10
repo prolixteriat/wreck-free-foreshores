@@ -17,6 +17,15 @@ define('ADMIN_REQUIRED', 'Administrator permissions required');
 
 # ------------------------------------------------------------------------------
 
+$app->get('/', function (Request $request, Response $response) {
+    $response->getBody()->write('404 Not Found');
+    return $response
+        ->withHeader('Content-Type', 'text/html')
+        ->withStatus(404);
+});
+
+# ------------------------------------------------------------------------------
+
 $app->post('/v1/add-user', function (Request $request, Response $response) {
     
     $query = new QueryMain();

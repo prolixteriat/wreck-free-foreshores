@@ -12,6 +12,7 @@ ini_set('display_errors', 0);
 
 require_once '../vendor/autoload.php';
 require_once '../private/config.php';
+require_once '../private/utils.php';
 
 # ------------------------------------------------------------------------------
 
@@ -27,8 +28,15 @@ $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 $app->add(new BasePathMiddleware($app));
+
+$customErrorHandler = new CustomErrorHandler(
+    $app->getCallableResolver(),
+    $app->getResponseFactory()
+);
+
 # Set first boolean to false in production code
-$app->addErrorMiddleware(false, true, true);
+$errorMiddleware = $app->addErrorMiddleware(false, true, true);
+$errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 
 # ------------------------------------------------------------------------------
 # Include API core and main code.
@@ -49,7 +57,7 @@ $app->options('/{routes:.+}',
 # ------------------------------------------------------------------------------
 # Log all unmatched calls. Must come last in route chain.
 
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', 
+$app->map(['CONNECT', 'DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT', 'TRACE'], '/{routes:.+}', 
     function (Request$request, Response$response) {
         $logger = get_logger('UnmatchedRequests');
         $logger->warning('Unmatched request: ' . (string)$request->getMethod());
