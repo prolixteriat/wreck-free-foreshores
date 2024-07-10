@@ -49,7 +49,7 @@ class ImageReduce {
         $this->get_tmp_filename();
         $source_image = imagecreatefromjpeg($uploaded_file);
         if (!$source_image) {
-            throw new Exception (`Error loading image: $uploaded_file`);
+            throw new Exception ("Error loading image: $uploaded_file");
         }
 
         list($orig_width, $orig_height) = getimagesize($uploaded_file);
