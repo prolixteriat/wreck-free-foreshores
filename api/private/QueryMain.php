@@ -52,10 +52,27 @@ class QueryMain extends QueryCore {
     }
     # --------------------------------------------------------------------------
     # 
-    public function get_wrecks(): Status {
+    public function get_wrecks(array $token_payload): Status {
 
-        return $this->db->get_wrecks();
+        $include_hidden = array_key_exists('include_hidden', $token_payload) ? 
+            (bool)$token_payload['include_hidden'] : false;
+        return $this->db->get_wrecks($include_hidden);
     }   
+    # --------------------------------------------------------------------------
+    # 
+    public function set_wreck_visibility(array $params, array $token_payload): Status {
+   
+        $required_params = ['sub'];
+        if (!validate_params($token_payload, $required_params)) {
+            return new Status(false, 400, 'Incorrectly formatted authorisation token');
+        }
+        $required_params = ['id', 'hidden'];
+        $status = validate_params($params, $required_params) ?
+            $this->db->set_wreck_visibility($params, $token_payload) :
+            new Status(false, 400, 'Incorrectly formatted query. Must supply wreck ID and hidden status.');
+
+        return $status;
+    }
     # --------------------------------------------------------------------------
 
 }

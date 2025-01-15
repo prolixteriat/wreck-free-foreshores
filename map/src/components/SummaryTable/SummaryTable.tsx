@@ -29,6 +29,7 @@ export default function SummaryTable(): React.JSX.Element {
             <table className='border mx-2 text-sm'>
                 <thead className='border-b-2 sticky top-0 leading-10'>
                 <tr className='bg-blue-50'>
+                    <th className='text-left px-2'>ID</th>
                     <th className='text-left px-2'>Location</th>
                     <th className='text-left px-2'>Name</th>
                     <th className='text-left px-2'>Make</th>
@@ -45,6 +46,7 @@ export default function SummaryTable(): React.JSX.Element {
                         className={`border-b cursor-pointer 
                             ${index === selectedRow ? 'bg-gray-300' : 'hover:bg-gray-100'}`} 
                         onClick={() => handleRowClick(index)} >
+                        <td className='px-2'>{wreck.wreck_id}</td>
                         <td className='px-2'>{wreck.location}</td>
                         <td className='px-2'>{wreck.name}</td>
                         <td className='px-2'>{wreck.make}</td>

@@ -3,6 +3,7 @@ import L from 'leaflet';
 
 import { getPhotoUrl } from '@hooks/usePhotos';
 import { TWrecksSchema } from '@hooks/useWrecks';
+import { kioskMode } from '@lib/config';
 import { defLatLon, svgMarkerLimit } from '@lib/global';
 import { getBaseMaps, mostRecentLatLon } from '@lib/funcs';
 import { JwtManager } from '@lib/jwtManager';
@@ -44,10 +45,12 @@ export class MapManager {
             // tap: !L.Browser.mobile,
             zoom: this.mapPref.getZoom(),
             zoomSnap: 0
-        });  
+        });
+        if (kioskMode === true) {
+            this.restrictBounds();
+        }
         this.initMap();
     }
-    
     // -------------------------------------------------------------------------
 
     addLayer(layer: L.GeoJSON | L.TileLayer | L.TileLayer.WMS, name: string = ''): void {
@@ -160,6 +163,21 @@ export class MapManager {
             this.map.removeLayer(layer);
             this.ctrlLayer?.removeLayer(layer);
         }
+    }
+    // -------------------------------------------------------------------------
+
+    restrictBounds(): void {
+        // Restrict map viewport to Cornwall area
+        const bounds = L.latLngBounds(
+            [49.960, -5.853],     // south-west corner
+            [50.396, -4.419]      // north-east corner
+        );
+        // this.map.setMaxBounds(bounds);
+        this.map.fitBounds(bounds);
+        this.map.setMinZoom(10);
+        this.map.on('drag', () => {
+            this.map.panInsideBounds(bounds, { animate: false });
+        });        
     }
     // -------------------------------------------------------------------------
 

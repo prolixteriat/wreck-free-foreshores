@@ -183,10 +183,12 @@ class DbMain extends DbCore {
     }    
     # ----------------------------------------------------------------------
     # 
-    public function get_wrecks(): Status {
+    public function get_wrecks(bool $include_hidden=false): Status {
 
         try {
-            $query = 'SELECT * FROM wrecks WHERE hidden=0';
+            $query = $include_hidden ?
+                'SELECT * FROM wrecks' :
+                'SELECT * FROM wrecks WHERE hidden=0';
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();               
@@ -213,6 +215,34 @@ class DbMain extends DbCore {
             if (isset($stmt)) { $stmt->close(); }            
         }
         return $status;      
+    }
+    # ----------------------------------------------------------------------
+    # 
+    public function set_wreck_visibility(array $params, array $token_payload): Status {
+
+        try {        
+            $username = $token_payload['sub'];
+            if ($this->username_disabled($username)) {
+               return new Status(false, 403, 'Account is disabled'); 
+            }
+            $hidden = clean_param($params, 'hidden');
+            $wreck_id = clean_param($params, 'id');
+            $query = 'UPDATE wrecks SET hidden=? WHERE wreck_id=?';
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('ii', $hidden, $wreck_id);
+            if ($stmt->execute() && $stmt->affected_rows > 0) {
+                $status = new Status(true, 200, 'Wreck visibility updated');
+                $this->add_audit('set_wreck_visibility', "Wreck ID $wreck_id visibility set to $hidden by username: $username");
+            } else {
+                $status = new Status(false, 500, 'Failed to update wreck visibility: ' . $stmt->error);
+            }
+        } catch (Exception $e) {
+            $this->logger->error('set_wreck_visibility: ' . $e->getMessage());
+            $status = new Status(false, 500, 'Error occurred (set_wreck_visibility)');
+        } finally {
+            if (isset($stmt)) { $stmt->close(); }            
+        }        
+        return $status;        
     }
     # --------------------------------------------------------------------------
 

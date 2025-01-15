@@ -2,13 +2,12 @@ import { Suspense } from 'react';
 
 import { IWrecksContext } from '@lib/global';
 import { JwtManager } from '@lib/jwtManager';
-import { NotificationForm, RankingsTable, SummaryTable, UsersTable, 
+import { EditTable, NotificationForm, RankingsTable, SummaryTable, UsersTable, 
     WrecksCharts, WrecksMap } from '@lib/lazy';
 
 import { TWrecksSchema } from '@hooks/useWrecks';
 
 import { Loading } from '@components/Common';
-
 
 // -----------------------------------------------------------------------------
 
@@ -20,7 +19,7 @@ export interface ITab {
 }
 
 // Use lowercase for tab names.
-export type TTabName = 'charts' | 'form' | 'map' | 'ranks' | 'table' | 'users';
+export type TTabName = 'charts' | 'edit' | 'form' | 'map' | 'ranks' | 'table' | 'users';
 
 export type TTabSelectCallback = (tab: TTabName) => void;
 
@@ -48,6 +47,10 @@ function makeTab(tabName: TTabName, wrecks: TWrecksSchema, mutate: number, onSel
             return formatTab('Charts', false, <WrecksCharts />);
         }
 
+        case 'edit': {
+            return formatTab('Edit', true, <EditTable />);
+        }
+
         case 'form': {
             return formatTab('Report a Wreck', false, <NotificationForm onSelect={onSelect} />);
         }
@@ -62,7 +65,7 @@ function makeTab(tabName: TTabName, wrecks: TWrecksSchema, mutate: number, onSel
         }
 
         case 'table': {
-            return formatTab('Summary Table', true, <SummaryTable />);
+            return formatTab('Summary', true, <SummaryTable />);
         }
 
         case 'users': {
@@ -109,6 +112,7 @@ export function makeTabs(context: IWrecksContext|undefined, onSelect: TTabSelect
             addTab('form');
             addTab('users');
             addTab('table');
+            addTab('edit');
             break
         }
         default: {

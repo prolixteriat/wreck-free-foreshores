@@ -56,13 +56,33 @@ $app->get('/v1/get-photo-info/{id}', function (Request $request, Response $respo
 $app->get('/v1/get-wrecks', function (Request $request, Response $response, $args) {
 
     $query = new QueryMain();
-    $status = $query->get_wrecks();
+    $status = $query->get_wrecks($request->getQueryParams());
     unset($query);
     $response->getBody()->write($status->message);
 	return $response
 			->withHeader('Content-Type', 'application/json')
             ->withStatus($status->code);   	
 });
+
+# ------------------------------------------------------------------------------
+
+$app->post('/v1/set-wreck-visibility', function (Request $request, Response $response, $args) {
+
+    if (is_admin($request)) {
+        $query = new QueryMain();
+        $status = $query->set_wreck_visibility($request->getParsedBody(), 
+                            get_token_payload($request));
+        unset($query);    
+    } else {
+        $status = new Status(false, 401, ADMIN_REQUIRED);
+    }
+    
+    $response->getBody()->write($status->message);
+
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($status->code);
+})->add(\PsrJwt\Factory\JwtMiddleware::json(JWT_KEY, 'jwt', array(AUTH_FAILED)));
 
 # ------------------------------------------------------------------------------
 

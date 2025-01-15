@@ -1,11 +1,10 @@
 import { useContext, useState } from 'react';
 
-import { homeUrl } from '@lib/config';
+import { homeUrl, kioskMode } from '@lib/config';
 import { WrecksContext } from '@lib/global';
 import { JwtManager } from '@lib/jwtManager';
 
 import { LoginForm, LogoutForm, RegisterForm } from '@components/UserForms';
-
 import { getTitle } from './funcs';
 
 // -----------------------------------------------------------------------------
@@ -51,17 +50,19 @@ export default function Menu(): React.JSX.Element {
             {getTitle()}
         </a>
       </div>
-      <div className='flex-none'>
-        <ul className='menu menu-horizontal px-1'>
-          {jwt.isLoggedOut() &&
-            <li><a href='#' onClick={handleRegisterClick}>Register</a></li>
-          }
-          {jwt.isLoggedIn() ?
-            <li><a onClick={handleLogoutClick}>{logoutText}</a></li> :
-            <li><a onClick={handleLoginClick}>Login</a></li>
-          }
-        </ul>
-      </div>
+      {kioskMode === false &&
+        <div className='flex-none'>
+          <ul className='menu menu-horizontal px-1'>
+            {jwt.isLoggedOut() &&
+              <li><a href='#' onClick={handleRegisterClick}>Register</a></li>
+            }
+            {jwt.isLoggedIn() ?
+              <li><a onClick={handleLogoutClick}>{logoutText}</a></li> :
+              <li><a onClick={handleLoginClick}>Login</a></li>
+            }
+          </ul>
+        </div>
+      }
     </div>
     {<LoginForm isOpen={showLogin} onClose={onCloseLogin} />}
     {<LogoutForm isOpen={showLogout} onClose={onCloseLogout} />}

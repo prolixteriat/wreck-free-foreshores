@@ -6,7 +6,10 @@ import { fetcher } from '@lib/fetcher';
 
 // -----------------------------------------------------------------------------
 
-export const getWrecksUrl = (): string => { return `${apiBaseUrl}v1/` + 'get-wrecks'; }
+export const getWrecksUrl = (includeHidden: boolean): string => { 
+    const url = `${apiBaseUrl}v1/` + 'get-wrecks?include_hidden=';
+    return includeHidden ? url+'1' : url+'0'; 
+}
 
 const wrecksFetcher = (url: string) => fetcher(url, WrecksSchemaArray);
 
@@ -60,9 +63,9 @@ export interface IuseWrecks {
 }   
 // -------------------
 
-export function useWrecks(): IuseWrecks {
+export function useWrecks(includeHidden: boolean=false): IuseWrecks {
     
-    const searchUrl = getWrecksUrl();
+    const searchUrl = getWrecksUrl(includeHidden);
     const { data, error, isLoading, mutate } = useSWR(searchUrl, wrecksFetcher,
       { refreshInterval: 5 * 60 * 1000, // refresh every 5 mins
       });

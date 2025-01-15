@@ -9,10 +9,10 @@ export const getTitle = (): string => {
             return title + ' (dev)';
         case 'local':
             return title + ' (local)';
+        case 'kiosk':
+            return title;
         case 'prod':
             return title;
-        case 'test':
-            return title + ' (test)';
         default:
             console.error(`Unknown environment: ${environment}`);
             return title;
