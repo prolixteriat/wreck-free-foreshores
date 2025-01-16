@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import { WrecksContext } from '@lib/global';
 import { JwtManager } from '@lib/jwtManager';
@@ -14,15 +14,13 @@ import { setWreckVisibility } from './callapi.ts';
 export default function EditTable(): React.JSX.Element {
     
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [selectedRow, setSelectedRow] = useState<number>(0);
 
   const context = useContext(WrecksContext);
-    
+  const tableRef = useRef<HTMLDivElement>(null);
   const { data, error, isLoading, mutate } = useWrecks(true);
-  const handleRowClick = (id: number): void => { 
-    setSelectedRow(id); 
-  }; 
-
+  
   const handleCheckboxChange = async (id: number) => {
     const wreck = data?.[id];
     if (!wreck) return;
@@ -44,13 +42,31 @@ export default function EditTable(): React.JSX.Element {
     }        
   };
 
+  const handleRowClick = (id: number): void => { 
+    setSelectedRow(id); 
+  }; 
+
+  const handleScroll = () => {
+    if (tableRef.current) {
+      setScrollPosition(tableRef.current.scrollTop);
+    }
+  };
+
+  useEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.scrollTop = scrollPosition;
+    }
+  }, [data, scrollPosition]);
+
   return (
       <>
         {(isLoading || isUpdating) ? (<Loading centre={true}/>): 
           ((error) ? (`Error fetching data: ${error.message}`) : 
             (data) ? (
             <>
-            <div className='mb-4 w-fit max-h-screen-150 overflow-auto'>
+            <div className='mb-4 w-fit max-h-screen-150 overflow-auto'
+                ref={tableRef}
+                onScroll={handleScroll} >
             <table className='border mx-2 text-sm'>
                 <thead className='border-b-2 sticky top-0 leading-10'>
                 <tr className='bg-blue-50'>

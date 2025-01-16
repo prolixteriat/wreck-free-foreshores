@@ -169,11 +169,11 @@ export class MapManager {
     restrictBounds(): void {
         // Restrict map viewport to Cornwall area
         const bounds = L.latLngBounds(
-            [49.960, -5.853],     // south-west corner
-            [50.396, -4.419]      // north-east corner
+            [49.960, -5.853],     // southwest corner
+            [50.396, -4.419]      // northeast corner
         );
-        // this.map.setMaxBounds(bounds);
-        this.map.fitBounds(bounds);
+        this.map.setMaxBounds(bounds);
+        // this.map.fitBounds(bounds);
         this.map.setMinZoom(10);
         this.map.on('drag', () => {
             this.map.panInsideBounds(bounds, { animate: false });
@@ -198,4 +198,3 @@ export class MapManager {
 // -----------------------------------------------------------------------------
 // End
 // -----------------------------------------------------------------------------
-
